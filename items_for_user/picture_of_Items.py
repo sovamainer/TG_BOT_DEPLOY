@@ -1,15 +1,20 @@
 import os
 import re
 
+from dotenv import load_dotenv
+
 import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
 from telegram.ext import ContextTypes
 
 from db import fetch_all, fetch_one
 
+
+load_dotenv()
+
 REPO_OWNER = "sovamainer"
-REPO_NAME = "tg_bot"
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "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")
+REPO_NAME = "TG_BOT_DEPLOY"
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 ITEM_MEDIA = {
     1: {
@@ -45,7 +50,7 @@ def _resolve_download_url(path: str) -> str | None:
     url = f'https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{path}'
     headers = {'Accept': 'application/vnd.github+json'}
     if GITHUB_TOKEN:
-        headers['Authorization'] = f'token {GITHUB_TOKEN}'
+        headers['Authorization'] = f'Bearer {GITHUB_TOKEN}'
 
     response = requests.get(url, headers=headers, timeout=10)
     if response.status_code == 200:

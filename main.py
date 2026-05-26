@@ -1,5 +1,8 @@
 import logging
 
+from dotenv import load_dotenv
+import os
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder,
@@ -11,7 +14,6 @@ from telegram.ext import (
     filters,
 )
 
-from _token.token import token
 from db import execute, fetch_one
 from items_for_user.add_to_basket import add_to_basket
 from items_for_user.basket import basket
@@ -30,6 +32,9 @@ from toBuy_functions.order import orders
 from toBuy_functions.verify_order import verify_order
 from userData_to_send.change_mail import cancel_mail, change_mail, new_mail
 from userData_to_send.data_to_send import cancel_contact, contact_data_user, data_to_send, start_to_contact
+
+
+load_dotenv()
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -143,7 +148,7 @@ async def noop(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token(token()).build()
+    application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
 
     application.add_handler(CommandHandler('start', start))
     application.add_handler(CommandHandler('cancel_code', cancel_code))
