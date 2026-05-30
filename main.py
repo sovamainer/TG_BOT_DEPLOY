@@ -3,7 +3,7 @@ import logging
 from dotenv import load_dotenv
 import os
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import (
     ApplicationBuilder,
     CallbackQueryHandler,
@@ -23,7 +23,6 @@ from items_for_user.items_db import items_db
 from items_for_user.picture_of_Items import picture_of_item
 from items_for_user.reAdd_to_basket import reAdd
 from payment_info.payment_info import payment_info
-from resources.resources import resources
 from serveOrder.ready_message import assembly, delivered, ready_message, sent
 from serveOrder.serveOrder import serveOrders
 from toBuy_functions.buy import buy
@@ -55,7 +54,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if user:
         text = 'Вход в личный кабинет SAMPE'
-        keyboard = create_keyboard([("👤 Личный кабинет", "personal_cabinet"), ("🔗 Наши ресурсы", "resources")])
+        keyboard = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton(text="👤 Личный кабинет", callback_data="personal_cabinet")
+            ],
+            [
+                InlineKeyboardButton(text="🔗 Наши ресурсы", web_app=WebAppInfo(url="https://taplink.cc/sampe"))
+            ]
+        ])
     else:
         text = 'Пожалуйста, зарегистрируйтесь'
         keyboard = create_keyboard([("👤 Регистрация", "register")])
@@ -174,7 +180,6 @@ if __name__ == '__main__':
     application.add_handler(CallbackQueryHandler(data_to_send, pattern=r'^contact_data$'))
     application.add_handler(CallbackQueryHandler(start_to_contact, pattern=r'^start_to_contact$'))
     application.add_handler(CallbackQueryHandler(change_mail, pattern=r'^change_mail$'))
-    application.add_handler(CallbackQueryHandler(resources, pattern=r'^resources$'))
 
     application.add_handler(CallbackQueryHandler(delete_order, pattern=r'^(delete_ord\d+|delete_order:\d+)$'))
     application.add_handler(CallbackQueryHandler(serveOrders, pattern=r'^serveOrder_'))
