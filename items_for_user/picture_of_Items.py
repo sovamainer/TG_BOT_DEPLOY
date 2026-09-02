@@ -33,7 +33,7 @@ ITEM_MEDIA = {
         "extra": "pictures/photo_5305266492079729520_y.jpg",
     },
     12: {
-        "title": "Худи хуюди(пикча тут тестовая)",
+        "title": "Худи",
         "product": "pictures/photo_5202035136349201102_y.jpg",
         "extra": "pictures/photo_5305266492079729520_y.jpg",
     },
